@@ -1,0 +1,62 @@
+{
+  "name": "rubtsovav/serps-long-execution",
+  "description": "Php library to parse the search engines.",
+  "keywords": ["SERPS", "Search Engine", "Parser", "Google"],
+  "type": "library",
+  "license": "LGPL-3.0",
+  "authors": [
+    {
+      "name": "Alexander Rubtsov",
+      "email": "RubtsovAV@gmail.com",
+      "homepage": "https://github.com/RubtsovAV"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+
+  "repositories": [
+    {
+        "type": "git",
+        "url": "https://github.com/RubtsovAV/serp-spider-core"
+    },
+    {
+        "type": "git",
+        "url": "https://github.com/RubtsovAV/serps-http-client-curl/"
+    },
+    {
+        "type": "git",
+        "url": "https://github.com/RubtsovAV/serps-search-engine-google"
+    }
+  ],
+
+  "autoload": {
+    "psr-4" : {
+        "RubtsovAV\\Serps\\": "src/"
+    }
+  },
+
+  "autoload-dev":{
+    "psr-4" : {
+        "RubtsovAV\\Serps\\Test\\": "test/suites"
+    }
+  },
+
+  "require": {
+    "php": ">=5.5",
+    "serps/search-engine-google": "dev-master",
+    "serps/http-client-curl": "dev-master",
+    "psr/log": "^1.0"
+  },
+
+  "require-dev":{
+    "squizlabs/php_codesniffer": "~2.5",
+    "phpunit/phpunit": "~4.8",
+    "internations/http-mock": "^0.8.0"
+  },
+
+  "scripts": {
+    "test": "vendor/bin/phpunit -c phpunit.dist.xml && echo \"\n>> Checking code standards\n\" && test/bin/phpcs.bash emacs",
+    "csfix": "test/bin/phpcbf.bash",
+    "cscheck": "test/bin/phpcs.bash emacs"
+  }
+}
