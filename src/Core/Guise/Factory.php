@@ -41,6 +41,11 @@ class Factory
         if (is_array($this->config['httpHeaders'])) {
             $httpHeaders = $this->config['httpHeaders'];
         }
+
+        if (!isset($httpHeaders['User-Agent'])) {
+            $httpHeaders['User-Agent'] = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1';
+        }
+
         return new Guise($cookieStorage, $proxy, $httpHeaders);
     }
 }
