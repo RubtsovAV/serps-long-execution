@@ -11,7 +11,7 @@ abstract class Conditions extends Condition
      */
     public function __construct(array $conditions = [])
     {
-    	$this->conditions = $conditions;
+        $this->conditions = $conditions;
     }
 
     public function addCondition(Condition $condition)

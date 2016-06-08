@@ -3,10 +3,10 @@
 namespace RubtsovAV\Serps\Test\Core;
 
 use RubtsovAV\Serps\Core\Facade as SerpsFacade;
+use RubtsovAV\Serps\Core\Query\Query;
 use RubtsovAV\Serps\Core\Query\Result;
 use RubtsovAV\Serps\Core\Client\Client;
 use RubtsovAV\Serps\Core\Client\Factory as ClientFactory;
-use RubtsovAV\Serps\Core\Query\Query;
 use RubtsovAV\Serps\Core\Logger;
 use RubtsovAV\Serps\Core\Exception\BadProxyException;
 use RubtsovAV\Serps\Core\Exception\NotAvailableProxyException;

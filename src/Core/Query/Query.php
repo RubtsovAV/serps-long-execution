@@ -9,7 +9,7 @@ class Query
 {
     protected $searchTerm;
     protected $searchRegion;
-    protected $maxPosition;
+    protected $positionLimit;
     protected $maxNumberItems;
     protected $conditionItems;
 
@@ -72,36 +72,36 @@ class Query
     }
 
     /**
-     * Sets the maximum position for the search.
+     * Limits the search area.
      * Executing the query will be interrupted when it reaches that position.
      *
-     * @param int $maxPosition
+     * @param int $positionLimit
      *
      * @throws InvalidArgumentException
-     *   If the $maxPosition is not numeric or is less than one.
+     *   If the $positionLimit is not numeric or is less than one.
      */
-    public function setMaxPosition($maxPosition)
+    public function setPositionLimit($positionLimit)
     {
-        if (!is_numeric($maxPosition)) {
-            throw new InvalidArgumentException('maxPosition must be a numeric');
+        if (!is_numeric($positionLimit)) {
+            throw new InvalidArgumentException('positionLimit must be a numeric');
         }
 
-        $maxPosition = (int) $maxPosition;
+        $positionLimit = (int) $positionLimit;
 
-        if ($maxPosition < 1) {
-            throw new InvalidArgumentException("maxPosition can't less than one");
+        if ($positionLimit < 1) {
+            throw new InvalidArgumentException("positionLimit can't less than one");
         }
 
-        $this->maxPosition = $maxPosition;
+        $this->positionLimit = $positionLimit;
     }
 
     /**
      * @return null|int
-     *   Returns null if the maxPosition is not set.
+     *   Returns null if the positionLimit is not set.
      */
-    public function getMaxPosition()
+    public function getPositionLimit()
     {
-        return $this->maxPosition;
+        return $this->positionLimit;
     }
 
     /**

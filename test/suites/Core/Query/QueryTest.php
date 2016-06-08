@@ -57,42 +57,31 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($searchRegion, $query->getSearchRegion());
     }
 
-    public function testMaxPosition()
+    public function testPositionLimit()
     {
         $searchTerm = 'foo';
         $query = new Query($searchTerm);
 
-        $maxPosition = 100;
-        $query->setMaxPosition($maxPosition);
-        $this->assertEquals($maxPosition, $query->getMaxPosition());
+        $positionLimit = 100;
+        $query->setPositionLimit($positionLimit);
+        $this->assertEquals($positionLimit, $query->getPositionLimit());
 
         // check type casting
-        $maxPosition = '100';
-        $query->setMaxPosition($maxPosition);
-        $this->assertInternalType('int', $query->getMaxPosition());
+        $positionLimit = '100';
+        $query->setPositionLimit($positionLimit);
+        $this->assertInternalType('int', $query->getPositionLimit());
     }
 
     /**
-     * @dataProvider getWrongMaxPositions
+     * @dataProvider getWrongPositiveInteger
      */
-    public function testWrongMaxPosition($wrongMaxPosition)
+    public function testWrongPositionLimit($wrongPositionLimit)
     {
         $searchTerm = 'foo';
         $query = new Query($searchTerm);
 
         $this->setExpectedException(InvalidArgumentException::class);
-        $query->setMaxPosition($wrongMaxPosition);
-    }
-
-    public function getWrongMaxPositions()
-    {
-        return [
-            'zero' => [0],
-            'negative number' => [-1],
-            'string' => ['test123'],
-            'array' => [[]],
-            'object' => [new \stdClass],
-        ];
+        $query->setPositionLimit($wrongPositionLimit);
     }
 
     public function testMaxNumberItems()
@@ -111,7 +100,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getWrongMaxPositions
+     * @dataProvider getWrongPositiveInteger
      */
     public function testWrongMaxNumberItems($wrongMaxNumberItems)
     {
@@ -122,7 +111,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $query->setMaxNumberItems($wrongMaxNumberItems);
     }
 
-    public function getWrongMaxNumberItems()
+    public function getWrongPositiveInteger()
     {
         return [
             'zero' => [0],

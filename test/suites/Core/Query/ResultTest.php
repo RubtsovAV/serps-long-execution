@@ -60,13 +60,13 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($maxNumberItems, $result->countItems());
     }
 
-    public function testMaxPositionItems()
+    public function testPositionLimit()
     {
         $searchTerm = 'test';
-        $maxPosition = 2;
+        $positionLimit = 2;
 
         $query = new Query($searchTerm);
-        $query->setMaxPosition($maxPosition);
+        $query->setPositionLimit($positionLimit);
 
         $result = new Result();
         $result->setQuery($query);
@@ -75,7 +75,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $items = $this->getItems();
         foreach ($items as $item) {
             $result->addItem($item);
-            if ($item->position <= $maxPosition) {
+            if ($item->position <= $positionLimit) {
                 $expectedCount++;
             }
         }
@@ -90,7 +90,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     {
         $searchTerm = 'test';
         $wantedDomain = 'domain';
-        $condition = new DomainCondition($wantedDomain);        
+        $condition = new DomainCondition($wantedDomain);
         
         $query = new Query($searchTerm);
         $query->setConditionItems($condition);
@@ -121,9 +121,9 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $wantedDomains = ['domain', 'sub.domain'];
 
         $condition = new AnyConditions([
-            new DomainCondition($wantedDomains[0]),        
-            new DomainCondition($wantedDomains[1]),  
-        ]);      
+            new DomainCondition($wantedDomains[0]),
+            new DomainCondition($wantedDomains[1]),
+        ]);
         
         $query = new Query($searchTerm);
         $query->setConditionItems($condition);

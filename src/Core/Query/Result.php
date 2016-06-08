@@ -33,7 +33,7 @@ class Result
             return;
         }
 
-        $maxPosition = $this->query->getMaxPosition();
+        $positionLimit = $this->query->getPositionLimit();
         $maxNumberItems = $this->query->getMaxNumberItems();
 
         if (!$this->query->getConditionItems()
@@ -43,8 +43,8 @@ class Result
             $this->items[] = $item;
         }
 
-        if ($maxPosition && $item->position >= $maxPosition) {
-            $this->logger->debug("ItemPosition->position >= maxPosition; {$item->position} >= $maxPosition");
+        if ($positionLimit && $item->position >= $positionLimit) {
+            $this->logger->debug("ItemPosition->position >= positionLimit; {$item->position} >= $positionLimit");
             $this->complete();
             return;
         }
