@@ -20,4 +20,9 @@ class ItemPosition
     {
         throw new Exception('all fields for read only');
     }
+
+    public function toArray()
+    {
+        return $this->data;
+    }
 }
