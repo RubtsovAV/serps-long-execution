@@ -9,7 +9,10 @@ A search engine scraper based on SERPS https://serp-spider.github.io/
 [![Latest Stable Version](https://poser.pugx.org/rubtsovav/serps-long-execution/v/stable)](https://packagist.org/packages/rubtsovav/serps-long-execution)
 [![License](https://poser.pugx.org/rubtsovav/serps-long-execution/license)](https://packagist.org/packages/rubtsovav/serps-long-execution)
 
-The library features:
+Designed for long-term execution, such as demons. Because the long-term execution will save you money on solving captcha.
+
+Features
+--------
 - Simple use
 - Easy configuration
 - Proxy manager
