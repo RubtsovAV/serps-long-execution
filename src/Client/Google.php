@@ -38,10 +38,30 @@ class Google extends Client
 
     protected function init()
     {
+        $this->config = array_replace_recursive(
+            [
+                'domainZone' => 'com',
+                'countryCode' => null,
+                'googleHost' => 'google.%domainZone%',
+
+                'httpOnly' => false,
+                'httpClientOptions' => [],
+
+                'pathDump' => null,
+                'dumpSerp' => false,
+                'dumpInvalidResponse' => false,
+                'dumpSerpDomError' => false,
+                'dumpCaptchaPage' => false,
+                'dumpCaptchaImage' => false,
+                'dumpCaptchaConfirmResponse' => false,
+            ],
+            $this->config
+        );
+
         $this->httpClient = new CurlClient();
         $this->googleClient = new GoogleClient($this->httpClient);
 
-        if (isset($this->config['httpClientOptions'])) {
+        if (!empty($this->config['httpClientOptions'])) {
             foreach ($this->config['httpClientOptions'] as $option => $value) {
                 $this->httpClient->getCurl()->setOption($option, $value);
             }
@@ -98,24 +118,15 @@ class Google extends Client
         $searchTerm = $query->getSearchTerm();
         $region = $query->getSearchRegion();
 
-        if (!empty($region['domainZone'])) {
-            $domainZone = $region['domainZone'];
-        } elseif (!empty($this->config['domainZone'])) {
-            $domainZone = $this->config['domainZone'];
-        } else {
-            $domainZone = 'com';
-        }
+        $domainZone = $this->config['domainZone'];
+        $googleHost = $this->config['googleHost'];
+        $countryCode = $this->config['countryCode'];
 
+        if (isset($region['domainZone'])) {
+            $domainZone = $region['domainZone'];
+        }
         if (isset($region['countryCode'])) {
             $countryCode = $region['countryCode'];
-        } elseif (isset($this->config['countryCode'])) {
-            $countryCode = $this->config['countryCode'];
-        }
-
-        if (isset($this->config['googleHost'])) {
-            $googleHost = $this->config['googleHost'];
-        } else {
-            $googleHost = 'google.%domainZone%';
         }
 
         $googleHost = str_replace('%domainZone%', $domainZone, $googleHost);
@@ -235,14 +246,13 @@ class Google extends Client
         $this->logger->debug('Client\Google->setGeoLocationCookie');
 
         $region = $this->query->getSearchRegion();
-        $coordinates = $region['coordinates'];
-        if (!$coordinates) {
+        if (!isset($region['coordinates'])) {
             $this->logger->info('coordinates is not set for the region');
             return;
         }
 
-        $latitude = $coordinates['latitude'];
-        $longitude = $coordinates['longitude'];
+        $latitude = $region['coordinates']['latitude'];
+        $longitude = $region['coordinates']['longitude'];
 
         $latitude_e7 = round($latitude * pow(10, 7));
         $longitude_e7 = round($longitude * pow(10, 7));
@@ -273,6 +283,7 @@ class Google extends Client
         $cookie = new Cookie('UULE', $value, ['domain' => ".$googleHost"]);
         $cookieStorage = $this->guise->getCookieStorage();
         $cookieStorage->set($cookie);
+
         $this->logger->info("set geolocation coordinates in latitude $latitude and longitude $longitude");
     }
 
@@ -325,18 +336,21 @@ class Google extends Client
         }
 
         $imageUrl = $captcha->getImageUrl();
-        $this->logger->info("download captcha image from $imageUrl");
-        $imageData = $this->downloadImageData($imageUrl);
 
+        $this->logger->info("download captcha image from $imageUrl");
+
+        $imageData = $this->downloadImageData($imageUrl);
         if ($this->config['dumpCaptchaImage']) {
             $this->createDumpCaptchaImage($imageData);
         }
 
         $this->logger->info('solve captcha');
+
         $captchaSolver = $this->config['captchaSolver'];
         $captchaAnswer = $captchaSolver($imageData);
 
         $this->logger->info("confirm captcha by answer $captchaAnswer");
+
         $response = $this->confirmCaptcha($captcha, $captchaAnswer);
         if ($this->config['dumpCaptchaConfirmResponse']) {
             $this->createDumpCaptchaConfirmResponse($response);

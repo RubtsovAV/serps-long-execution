@@ -67,13 +67,12 @@ abstract class Client
     {
         $this->logger->debug('Client->canSolveCaptcha');
 
-        $captchaSolver = $this->config['captchaSolver'];
-        if (!isset($captchaSolver)) {
+        if (!isset($this->config['captchaSolver'])) {
             $this->logger->notice('you need to set the captchaSolver in config for that client');
             return false;
         }
 
-        if (!is_callable($captchaSolver)) {
+        if (!is_callable($this->config['captchaSolver'])) {
             throw new CaptchaSolverException('captchaSolver must be a callable');
             return false;
         }
@@ -85,12 +84,12 @@ abstract class Client
     {
         $this->logger->debug('Client->createDump');
 
-        $pathDump = $this->config['pathDump'];
-        if (!$pathDump) {
+        if (!isset($this->config['pathDump'])) {
             $this->logger->notice('pathDump config is not set');
             return;
         }
 
+        $pathDump = $this->config['pathDump'];
         if (substr($pathDump, -1) != '/') {
             $pathDump .= '/';
         }
