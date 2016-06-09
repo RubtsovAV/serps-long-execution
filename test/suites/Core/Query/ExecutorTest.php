@@ -21,7 +21,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     {
         $searchTerm = 'foo';
         $query = new Query($searchTerm);
-            
+
         $clientMock = $this->getMockBuilder(Client::class)
             ->setMethods([
                 'executeQuery',
@@ -43,7 +43,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     public function testExecute(Executor $executor)
     {
         $result = new Result();
-     
+
         $clientMock = $executor->getClient();
         $clientMock
             ->method('executeQuery')
@@ -80,7 +80,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
             ->method('executeQuery')
             ->will($this->throwException(new BadProxyException));
 
-        $this->setExpectedException(BadProxyException::class);
+        $this->expectException(BadProxyException::class);
         $executor->execute();
     }
 
@@ -94,7 +94,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
             ->method('executeQuery')
             ->will($this->throwException(new BannedProxyException));
 
-        $this->setExpectedException(BannedProxyException::class);
+        $this->expectException(BannedProxyException::class);
         $executor->execute();
     }
 }

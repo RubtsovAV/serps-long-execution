@@ -28,7 +28,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
      */
     public function testWrongSearchTerm($wrongSearchTerm)
     {
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $query = new Query($wrongSearchTerm);
     }
 
@@ -80,7 +80,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $searchTerm = 'foo';
         $query = new Query($searchTerm);
 
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $query->setPositionLimit($wrongPositionLimit);
     }
 
@@ -107,7 +107,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $searchTerm = 'foo';
         $query = new Query($searchTerm);
 
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $query->setMaxNumberItems($wrongMaxNumberItems);
     }
 
