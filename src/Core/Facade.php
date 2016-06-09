@@ -98,4 +98,5 @@ class Facade
         }
         return $clientConfig;
     }
+    
 }
