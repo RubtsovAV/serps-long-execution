@@ -1,3 +1,10 @@
+The Google client
+=====
+Features:		
+ - Set the location by geo coordinates		
+ - Notice if proxy was banned		
+ - Catch and confirm captcha
+
 Quick Start
 -----
 
