@@ -26,19 +26,21 @@ class Factory
         $proxy = null;
         $httpHeaders = [];
 
-        $proxyConfig = $this->config['proxy'];
-        if (!$proxyConfig['logger']) {
-            $proxyConfig['logger'] = $this->logger;
-        }
-        try {
-            $proxy = Proxy::getInstance($proxyConfig);
-        } catch (NotAvailableProxyException $ex) {
-            $this->logger->debug('Proxy::getInstance() throw NotAvailableProxyException');
-            $this->logger->info('not available proxy');
-            throw $ex;
+        if (isset($this->config['proxy'])) {
+            $proxyConfig = $this->config['proxy'];
+            if (!isset($proxyConfig['logger'])) {
+                $proxyConfig['logger'] = $this->logger;
+            }
+            try {
+                $proxy = Proxy::getInstance($proxyConfig);
+            } catch (NotAvailableProxyException $ex) {
+                $this->logger->debug('Proxy::getInstance() throw NotAvailableProxyException');
+                $this->logger->info('not available proxy');
+                throw $ex;
+            }
         }
         
-        if (is_array($this->config['httpHeaders'])) {
+        if (isset($this->config['httpHeaders'])) {
             $httpHeaders = $this->config['httpHeaders'];
         }
 

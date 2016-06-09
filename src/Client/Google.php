@@ -41,7 +41,7 @@ class Google extends Client
         $this->httpClient = new CurlClient();
         $this->googleClient = new GoogleClient($this->httpClient);
 
-        if ($this->config['httpClientOptions']) {
+        if (isset($this->config['httpClientOptions'])) {
             foreach ($this->config['httpClientOptions'] as $option => $value) {
                 $this->httpClient->getCurl()->setOption($option, $value);
             }
@@ -106,11 +106,11 @@ class Google extends Client
             $domainZone = 'com';
         }
 
-        if (!empty($region['countryCode'])) {
+        if (isset($region['countryCode'])) {
             $countryCode = $region['countryCode'];
-        } elseif (!empty($this->config['countryCode'])) {
+        } elseif (isset($this->config['countryCode'])) {
             $countryCode = $this->config['countryCode'];
-        }
+        } 
 
         if (isset($this->config['googleHost'])) {
             $googleHost = $this->config['googleHost'];
@@ -126,7 +126,7 @@ class Google extends Client
             $url->setScheme('http');
             $url->setParam('gws_rd', 'ssl');
         }
-        if ($countryCode) {
+        if (isset($countryCode)) {
             $url->setParam('cr', 'country' . $countryCode);
         }
         $url->setResultsPerPage(100);
