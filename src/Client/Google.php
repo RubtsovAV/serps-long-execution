@@ -202,14 +202,15 @@ class Google extends Client
                     $this->createDumpInvalidResponse($response);
                 }
                 if ($this->isBannedResponse($response)) {
-                    $pageContent = $response->getPageContent();
                     $this->logger->info('proxy was banned in the Google');
                     throw new BannedProxyException('', null, $ex);
-                } else {
-                    $statusCode = $response->getHttpResponseStatus();
-                    $this->logger->notice("received undefined response with the status code $statusCode");
-                    throw new BadProxyException('', null, $ex);
                 }
+
+                $statusCode = $response->getHttpResponseStatus();
+                $this->logger->notice(
+                    "received undefined response with the status code $statusCode"
+                );
+                throw new BadProxyException('', null, $ex);
             }
         }
         $this->logger->info('response received');
@@ -448,14 +449,12 @@ class Google extends Client
 
         $url = $captcha->getErrorPage()->getUrl();
         if (!empty($action)) {
-            if ($action{0} == '/') {
-                $url = $url->resolve($action);
-            } else {
+            if ($action{0} != '/') {
                 $path = $url->getPath();
                 $path = substr($path, 0, strrpos($path, '/'));
-                $path .= '/' . $action;
-                $url = $url->resolve($path);
+                $action =  $path . '/' . $action;
             }
+            $url = $url->resolve($action);
         }
 
         return [
@@ -476,11 +475,11 @@ class Google extends Client
         $this->createDump('Serp', $dumpString);
     }
 
-    protected function createDumpSerpDomError(GoogleSerp $serp, SerpsException $ex)
+    protected function createDumpSerpDomError(GoogleSerp $serp, SerpsException $error)
     {
         $this->logger->debug('Client\Google->createDumpSerpDomError');
 
-        $dumpString .= 'Error: ' . $ex . "\n";
+        $dumpString .= 'Error: ' . $error . "\n";
         $dumpString .= 'URL: ' . $serp->getUrl() . "\n";
         $dumpString .= "Page content:\n". $serp->getDom()->C14N();
 
