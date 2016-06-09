@@ -15,7 +15,10 @@ trait ConfigTrait
     public function initConfig(array $config = [])
     {
         $this->config = $config;
-        $this->logger = Logger::getInstance($config['logger']);
+
+        $logger = isset($config['logger']) ? $config['logger'] : null;
+        $this->logger = Logger::getInstance($logger);
+
         if (method_exists($this, 'init')) {
             $this->init();
         }
