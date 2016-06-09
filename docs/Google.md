@@ -71,7 +71,7 @@ $serpsConfig = [
     ],
 ];
 $serps = new Serps($serpsConfig);
-$client = $serps->getClientByName('Google');
+$client = $serps->createClientByName('Google');
 $result = $serps->executeQueryBy($client, $query);
 
 echo "Found: " . $result->countItems() . " items\n";
@@ -156,7 +156,7 @@ $serpsConfig = [
 ];
 
 $serps = new Serps($serpsConfig);
-$client = $serps->getClientByName('Google');
+$client = $serps->createClientByName('Google');
 
 // The result can be returned after a long time, if your proxy server is not good.
 // Be sure that your the proxy queue is not empty, 
@@ -199,7 +199,7 @@ $serpsConfig = [
 ];
 
 $serps = new Serps($serpsConfig);
-$client = $serps->getClientByName('Google');
+$client = $serps->createClientByName('Google');
 
 // The result can be returned after a long time, if your proxy server is not good.
 // Be sure that your the proxy queue is not empty, 
