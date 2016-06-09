@@ -24,13 +24,15 @@ $serpsConfig = [
              *   Must return the answer string.
              */
             'captchaSolver' => function ($imageData) {
+                // It's your api key from here https://anti-captcha.com/panel/settings/account
+                $anticaptchaKey = 'PASTE_HERE_YOUR_ANTICAPTCHA_KEY';
             
                 $imageFile = tmpfile();
                 fwrite($imageFile, $imageData);
                 $imageFileMeta = stream_get_meta_data($imageFile);
                 $imageFileName = $imageFileMeta['uri'];
                 
-                // $anticaptchaKey - It's your api key from here https://anti-captcha.com/panel/settings/account
+                
                 $captchaAnswer = recognize($imageFileName, $anticaptchaKey, false);
                 
                 fclose($imageFile);
