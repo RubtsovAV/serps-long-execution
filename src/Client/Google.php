@@ -110,7 +110,7 @@ class Google extends Client
             $countryCode = $region['countryCode'];
         } elseif (isset($this->config['countryCode'])) {
             $countryCode = $this->config['countryCode'];
-        } 
+        }
 
         if (isset($this->config['googleHost'])) {
             $googleHost = $this->config['googleHost'];
