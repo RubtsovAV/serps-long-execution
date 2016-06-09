@@ -32,7 +32,6 @@ $serpsConfig = [
                 $imageFileMeta = stream_get_meta_data($imageFile);
                 $imageFileName = $imageFileMeta['uri'];
                 
-                
                 $captchaAnswer = recognize($imageFileName, $anticaptchaKey, false);
                 
                 fclose($imageFile);
