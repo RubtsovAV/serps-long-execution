@@ -59,7 +59,6 @@ $serpsConfig = [
     ],
     'client' => [
         'Google' => [
-        
             // Use only http protocol (not https)
             'httpOnly' => true,
         ]
