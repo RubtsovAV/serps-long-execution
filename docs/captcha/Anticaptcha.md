@@ -1,4 +1,4 @@
-Anticaptcha
+Anti-captcha.com
 ============
 
 This code show how you can use the captcha solver with the Google client.
