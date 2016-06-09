@@ -20,4 +20,4 @@ Install it using composer: ``composer require rubtsovav/serps-long-execution``
 Supported search engines
 -------------
 
-- Google
+- [Google](https://github.com/RubtsovAV/serps-long-execution/blob/master/docs/Google.md)
