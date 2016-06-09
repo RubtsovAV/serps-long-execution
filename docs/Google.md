@@ -216,6 +216,8 @@ foreach ($result->getItems() as $item) {
 
 ```
 
+Example with the [Anticaptcha.com](https://github.com/RubtsovAV/serps-long-execution/blob/master/docs/captcha/Anticaptcha.md)
+
 PSR Logger
 ---------
 
