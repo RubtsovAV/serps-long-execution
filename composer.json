@@ -2,6 +2,7 @@
   "name": "rubtsovav/serps-long-execution",
   "description": "Php library to parse the search engines.",
   "keywords": ["SERPS", "Search Engine", "Parser", "Google"],
+  "homepage" : "https://github.com/RubtsovAV/serps-long-execution",
   "type": "library",
   "license": "LGPL-3.0",
   "authors": [
