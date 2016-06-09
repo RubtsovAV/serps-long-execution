@@ -61,6 +61,12 @@ $serpsConfig = [
         'Google' => [
             // Use only http protocol (not https)
             'httpOnly' => true,
+            
+            // Set the CURL options for every request
+            'httpClientOptions' => [
+                CURLOPT_CONNECTTIMEOUT => 10,
+                CURLOPT_TIMEOUT => 30,
+            ]
         ]
     ],
 ];
