@@ -62,14 +62,6 @@ $serpsConfig = [
         
             // Use only http protocol (not https)
             'httpOnly' => true,
-            
-            // Set the default Google domain zone
-            // You can see the full list here https://en.wikipedia.org/wiki/List_of_Google_domains
-            'domainZone' => 'ru',  
-            
-            // Set the default country code
-            // You can find the code for your country here https://developers.google.com/public-data/docs/canonical/countries_csv
-            'countryCode' => 'RU',
         ]
     ],
 ];
