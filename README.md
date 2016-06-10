@@ -22,7 +22,9 @@ Features
 Install
 -------
 
-Install it using composer: ``composer require rubtsovav/serps-long-execution``
+Install via Composer
+
+``composer require rubtsovav/serps-long-execution``
 
 Supported search engines
 -------------
