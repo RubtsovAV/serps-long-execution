@@ -33,7 +33,8 @@ $query->setMaxNumberItems(1);
 // It optional.
 $query->setPositionLimit(100);
 
-// result for the 'Russia'
+// We need only items for the 'Russia'
+// It optional.
 $query->setSearchRegion([
 
     // Set the Google domain zone for that query
