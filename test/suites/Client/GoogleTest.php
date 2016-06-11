@@ -6,6 +6,8 @@ use RubtsovAV\Serps\Client\Google;
 use RubtsovAV\Serps\Core\Query\Query;
 use RubtsovAV\Serps\Core\Query\Result;
 use RubtsovAV\Serps\Core\Facade as SerpsFacade;
+use RubtsovAV\Serps\Core\Exception\BadProxyException;
+use RubtsovAV\Serps\Core\Exception\BannedProxyException;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +20,8 @@ use InterNations\Component\HttpMock\PHPUnit\HttpMockTrait;
 class GoogleTest extends \PHPUnit_Framework_TestCase
 {
     use HttpMockTrait;
+
+    const PATH_DUMP = 'build/dump';
 
     public static function setUpBeforeClass()
     {
@@ -45,6 +49,15 @@ class GoogleTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         $this->tearDownHttpMock();
+
+        // remove the dir for dump files
+        $pathDump = realpath(static::PATH_DUMP);
+        if (is_dir($pathDump)) {
+            $pathDump = escapeshellarg($pathDump);
+            if ($pathDump) {
+                exec("rm -rf $pathDump");
+            }
+        }
     }
 
     private function getResourceFile($filename)
@@ -239,6 +252,9 @@ class GoogleTest extends \PHPUnit_Framework_TestCase
                 'Google' => [
                     'httpOnly' => true,
                     'googleHost' => $this->http->server->getConnectionString(),
+
+                    'pathDump' => static::PATH_DUMP,
+                    'dumpSerp' => true,
                 ],
             ]
         ];
@@ -267,6 +283,12 @@ class GoogleTest extends \PHPUnit_Framework_TestCase
         $result = $serps->executeQueryBy($client, $query);
         $this->assertInstanceOf(Result::class, $result);
         $this->assertEquals($maxNumberItems, $result->countItems());
+      
+        $this->assertEquals(
+            1,
+            count(glob(static::PATH_DUMP . '/*.dump')),
+            'dump file was not created'
+        );
     }
 
     public function testCaptchaResponse()
@@ -362,5 +384,161 @@ class GoogleTest extends \PHPUnit_Framework_TestCase
         $result = $serps->executeQueryBy($client, $query);
         $this->assertInstanceOf(Result::class, $result);
         $this->assertEquals($maxNumberItems, $result->countItems());
+    }
+
+    public function testBadProxyExceptionWhenConnectionIsBreak()
+    {
+        $config = [
+            'client' => [
+                'Google' => [
+                    'httpOnly' => true,
+
+                    // the connection will fail
+                    'googleHost' => $this->http->server->getConnectionString(),
+                ],
+            ]
+        ];
+
+        $serps = new SerpsFacade($config);
+        $client = $serps->createClientByName('Google');
+
+        $searchTerm = 'test';
+        $maxNumberItems = 10;
+
+        $query = new Query($searchTerm);
+        $query->setMaxNumberItems($maxNumberItems);
+
+        $this->expectException(BadProxyException::class);
+        $result = $serps->executeQueryBy($client, $query);
+    }
+
+    public function testBadProxyExceptionWhenResponseNotSerpPage()
+    {
+        // creation of a web server behavior
+        $this->http->mock
+            ->once()
+            ->when()
+                ->callback(static function (Request $request) {
+                    return $request->getPathInfo() == '/search';
+                })
+            ->then()
+                ->body($this->getResourceFile('not_serp_page.html'))
+            ->end();
+
+        $this->http->setUp();
+
+        $config = [
+            'client' => [
+                'Google' => [
+                    'httpOnly' => true,
+                    'googleHost' => $this->http->server->getConnectionString(),
+
+                    'pathDump' => static::PATH_DUMP,
+                    'dumpSerpDomError' => true,
+                ],
+            ]
+        ];
+
+        $serps = new SerpsFacade($config);
+        $client = $serps->createClientByName('Google');
+
+        $searchTerm = 'test';
+        $maxNumberItems = 10;
+
+        $query = new Query($searchTerm);
+        $query->setMaxNumberItems($maxNumberItems);
+
+        $this->expectException(BadProxyException::class);
+        $result = $serps->executeQueryBy($client, $query);
+
+        $this->assertEquals(
+            1,
+            count(glob(static::PATH_DUMP . '/*.dump')),
+            'dump file was not created'
+        );
+    }
+
+    public function testBadProxyExceptionWhenResponseStatusIsWrong()
+    {
+        // creation of a web server behavior
+        $this->http->mock
+            ->once()
+            ->when()
+                ->callback(static function (Request $request) {
+                    return $request->getPathInfo() == '/search';
+                })
+            ->then()
+                ->statusCode(Response::HTTP_PROXY_AUTHENTICATION_REQUIRED)
+            ->end();
+
+        $this->http->setUp();
+
+        $config = [
+            'client' => [
+                'Google' => [
+                    'httpOnly' => true,
+                    'googleHost' => $this->http->server->getConnectionString(),
+
+                    'pathDump' => static::PATH_DUMP,
+                    'dumpInvalidResponse' => true,
+                ],
+            ]
+        ];
+
+        $serps = new SerpsFacade($config);
+        $client = $serps->createClientByName('Google');
+
+        $searchTerm = 'test';
+        $maxNumberItems = 10;
+
+        $query = new Query($searchTerm);
+        $query->setMaxNumberItems($maxNumberItems);
+
+        $this->expectException(BadProxyException::class);
+        $result = $serps->executeQueryBy($client, $query);
+
+        $this->assertEquals(
+            1,
+            count(glob(static::PATH_DUMP . '/*.dump')),
+            'dump file was not created'
+        );
+    }
+
+    public function testBannedProxyException()
+    {
+        // creation of a web server behavior
+        $this->http->mock
+            ->once()
+            ->when()
+                ->callback(static function (Request $request) {
+                    return $request->getPathInfo() == '/search';
+                })
+            ->then()
+                ->statusCode(Response::HTTP_FORBIDDEN)
+                ->body($this->getResourceFile('banned_page.html'))
+            ->end();
+
+        $this->http->setUp();
+
+        $config = [
+            'client' => [
+                'Google' => [
+                    'httpOnly' => true,
+                    'googleHost' => $this->http->server->getConnectionString(),
+                ],
+            ]
+        ];
+
+        $serps = new SerpsFacade($config);
+        $client = $serps->createClientByName('Google');
+
+        $searchTerm = 'test';
+        $maxNumberItems = 10;
+
+        $query = new Query($searchTerm);
+        $query->setMaxNumberItems($maxNumberItems);
+
+        $this->expectException(BannedProxyException::class);
+        $result = $serps->executeQueryBy($client, $query);
     }
 }
