@@ -174,6 +174,7 @@ class Google extends Client
             try {
                 $this->logger->debug('try googleClient->query()');
                 $this->logger->info('send query');
+                
                 $serp = $this->googleClient->query(
                     $this->googleUrl,
                     $proxy,
