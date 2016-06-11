@@ -469,6 +469,7 @@ class Google extends Client
     {
         $this->logger->debug('Client\Google->createDumpSerp');
 
+        $dumpString = '';
         $dumpString .= 'URL: ' . $serp->getUrl() . "\n";
         $dumpString .= "Page content:\n". $serp->getDom()->C14N();
 
@@ -492,6 +493,7 @@ class Google extends Client
     {
         $this->logger->debug('Client\Google->createDumpInvalidResponse');
 
+        $dumpString = '';
         $dumpString .= 'Initial URL: ' . $response->getInitialUrl() . "\n";
         $dumpString .= 'Effective URL: ' . $response->getEffectiveUrl() . "\n";
         $dumpString .= 'HTTP Status: ' . $response->getHttpResponseStatus() . "\n";
@@ -506,6 +508,7 @@ class Google extends Client
     {
         $this->logger->debug('Client\Google->createDumpCaptchaPage');
 
+        $dumpString = '';
         $dumpString .= 'Url: ' . $captcha->getErrorPage()->getUrl() . "\n";
         $dumpString .= "Page content:\n" . $captcha->getErrorPage()->getDom()->C14N();
 
@@ -525,6 +528,7 @@ class Google extends Client
     {
         $this->logger->debug('Client\Google->createDumpCaptchaConfirmResponse');
 
+        $dumpString = '';
         $dumpString .= 'Initial URL: ' . $response->getInitialUrl() . "\n";
         $dumpString .= 'Effective URL: ' . $response->getEffectiveUrl() . "\n";
         $dumpString .= 'HTTP Status: ' . $response->getHttpResponseStatus() . "\n";
