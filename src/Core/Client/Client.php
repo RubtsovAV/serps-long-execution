@@ -89,6 +89,11 @@ abstract class Client
             return;
         }
 
+        if (empty($this->config['pathDump'])) {
+            $this->logger->notice('pathDump can\'t be empty');
+            return;
+        }
+
         $pathDump = $this->config['pathDump'];
         if (substr($pathDump, -1) != '/') {
             $pathDump .= '/';
