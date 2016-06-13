@@ -74,7 +74,6 @@ class GoogleTest extends \PHPUnit_Framework_TestCase
         $config = [
             'httpHeaders' => [
                 'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1',
-                'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
                 'Accept-Language' => 'ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3',
             ],
             'client' => [
@@ -106,7 +105,6 @@ class GoogleTest extends \PHPUnit_Framework_TestCase
         $config = [
             'httpHeaders' => [
                 'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1',
-                'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
                 'Accept-Language' => 'ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3',
             ],
             'client' => [
@@ -168,7 +166,6 @@ class GoogleTest extends \PHPUnit_Framework_TestCase
         $config = [
             'httpHeaders' => [
                 'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1',
-                'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
                 'Accept-Language' => 'ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3',
             ],
             'client' => [
