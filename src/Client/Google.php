@@ -481,6 +481,7 @@ class Google extends Client
     {
         $this->logger->debug('Client\Google->createDumpSerpDomError');
 
+        $dumpString = '';
         $dumpString .= 'Error: ' . $error . "\n";
         $dumpString .= 'URL: ' . $serp->getUrl() . "\n";
         $dumpString .= "Page content:\n". $serp->getDom()->C14N();
