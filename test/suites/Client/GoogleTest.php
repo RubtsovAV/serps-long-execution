@@ -369,6 +369,11 @@ class GoogleTest extends \PHPUnit_Framework_TestCase
                         CURLOPT_CONNECTTIMEOUT => 10,
                         CURLOPT_TIMEOUT => 30,
                     ],
+
+                    'pathDump' => static::PATH_DUMP,
+                    'dumpCaptchaPage' => true,
+                    'dumpCaptchaImage' => true,
+                    'dumpCaptchaConfirmResponse' => true,
                 ],
             ]
         ];
@@ -384,6 +389,12 @@ class GoogleTest extends \PHPUnit_Framework_TestCase
         $result = $serps->executeQueryBy($client, $query);
         $this->assertInstanceOf(Result::class, $result);
         $this->assertEquals($maxNumberItems, $result->countItems());
+
+        $this->assertEquals(
+            3,
+            count(glob(static::PATH_DUMP . '/*.dump')),
+            'dump files was not created'
+        );
     }
 
     public function testBadProxyExceptionWhenConnectionIsBreak()
